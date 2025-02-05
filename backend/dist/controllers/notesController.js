@@ -13,7 +13,6 @@ const addNote = (req, res) => {
     }
     const newNote = { id: Date.now(), title, content };
     notes.push(newNote);
-    res.status(201).json(newNote);
-    return;
+    return res.status(201).json(newNote);
 };
 exports.addNote = addNote;

@@ -1,23 +1,29 @@
 export interface Note {
-  id: number;
+  id?: number;
   title: string;
   content: string;
 }
 
-export const getNotes = async (): Promise<Note[]> => {
-  const response = await fetch("http://localhost:5000/api/notes");
-  if (!response.ok) throw new Error("Failed to fetch notes");
+const BASE_URL = "http://localhost:5000/api/notes";
+
+export const getNotes = async () => {
+  const response = await fetch(BASE_URL);
+  if (!response.ok) {
+    throw new Error();
+  }
   return await response.json();
 };
 
-export const createNote = async (note: Omit<Note, "id">): Promise<Note> => {
-  const response = await fetch("http://localhost:5000/api/notes", {
+export const createNote = async (note: Note) => {
+  const response = await fetch(BASE_URL, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(note),
   });
-  if (!response.ok) throw new Error("Failed to create note");
+  if (!response.ok) {
+    throw new Error();
+  }
   return await response.json();
 };

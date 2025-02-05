@@ -1,37 +1,29 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getNotes, createNote, Note } from "../services/notesService";
 
 const useNotes = () => {
   const [notes, setNotes] = useState<Note[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchNotes = async () => {
-      setLoading(true);
-      try {
-        const notesData = await getNotes();
-        setNotes(notesData);
-      } catch (err) {
-        setError("Failed to fetch note");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchNotes = async () => {
+    try {
+      const notesData = await getNotes();
+      setNotes(notesData);
+    } catch {
+      setError("Failed to fetch notes, please try again.");
+    }
+  };
 
-    fetchNotes();
-  }, []);
-
-  const addNote = async (note: Omit<Note, "id">) => {
+  const addNote = async (note: Note) => {
     try {
       const newNote = await createNote(note);
       setNotes((prevNotes) => [...prevNotes, newNote]);
     } catch (err) {
-      throw new Error("Failed to create note");
+      throw new Error("Failed to create the note, please try again.");
     }
   };
 
-  return { notes, loading, error, addNote };
+  return { notes, error, fetchNotes, addNote };
 };
 
 export default useNotes;

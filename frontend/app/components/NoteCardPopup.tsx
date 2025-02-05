@@ -1,13 +1,14 @@
 import React, { useState } from "react";
-import useNotes from "../hooks/useNotes";
+
+type NoteCardPopupProps = {
+  closePopup: () => void;
+  handleCreatingNote: (title: string, content: string) => void;
+};
 
 const NoteCardPopup = ({
-  setShowStatus,
-}: {
-  setShowStatus: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const { loading, addNote } = useNotes();
-
+  closePopup,
+  handleCreatingNote,
+}: NoteCardPopupProps) => {
   const [error, setError] = useState("");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -15,16 +16,17 @@ const NoteCardPopup = ({
     title?: string;
     content?: string;
   }>({});
+  const [isLoading, setIsLoading] = useState(false);
 
-  const clearNote = () => {
+  const clearPopup = () => {
     setTitle("");
     setContent("");
     setValidations({ title: "", content: "" });
   };
 
-  const validateForm = () => {
+  const isFormValidated = () => {
     const newValidations: { title?: string; content?: string } = {};
-    console.log("Validate title", title);
+
     if (!title.trim()) newValidations.title = "Title is required";
     if (!content.trim()) newValidations.content = "Content is required";
 
@@ -34,13 +36,15 @@ const NoteCardPopup = ({
 
   const handleAddNote = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (!validateForm()) return;
+    if (!isFormValidated()) return;
     try {
-      await addNote({ title, content });
-      clearNote();
-      setShowStatus(false);
+      setIsLoading(true);
+      clearPopup();
+      handleCreatingNote(title, content);
     } catch (e) {
       setError(e instanceof Error ? e.message : String(e));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -78,8 +82,10 @@ const NoteCardPopup = ({
             {validations.content && (
               <p className="text-red-500 text-sm">{validations.content}</p>
             )}
-            <button onClick={(e) => handleAddNote(e)}>Create</button>
-            <button onClick={() => setShowStatus(false)}>Close</button>
+            <button onClick={(e) => handleAddNote(e)}>
+              {isLoading ? "Creating" : "Create"}
+            </button>
+            <button onClick={() => closePopup()}>Close</button>
           </form>
         </div>
       </div>

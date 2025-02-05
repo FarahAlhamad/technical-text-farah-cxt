@@ -17,6 +17,5 @@ export const addNote = (req: Request, res: Response) => {
   const newNote: Note = { id: Date.now(), title, content };
   notes.push(newNote);
 
-  res.status(201).json(newNote);
-  return;
+  return res.status(201).json(newNote);
 };
