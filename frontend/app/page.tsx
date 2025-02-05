@@ -12,13 +12,16 @@ export default function Home() {
   };
   return (
     <main className="bg-white md:my-32 md:mx-16 lg:mx-36 md:shadow-lg md:rounded-lg p-8">
-      <h1 className="font-bold text-2xl mb-1">Notes App</h1>
-      <p className="text-opacity-90 text-slate-700">
-        A simple and efficient app to jot down your thoughts and ideas.
-      </p>
+      <header>
+        <h1 className="font-bold text-2xl mb-1">Notes App</h1>
+        <p className="text-opacity-90 text-slate-700">
+          A simple and efficient app to jot down your thoughts and ideas.
+        </p>
+      </header>
       <button
         className="my-4 bg-purple-500 hover:bg-purple-600 py-1 px-4 rounded-md text-white text-opacity-90"
         onClick={() => openNotePopup()}
+        disabled={true}
       >
         Create Note
       </button>
@@ -27,14 +30,13 @@ export default function Home() {
           Failed to fetch data. Please try again.
         </p>
       )}
-      {!error && notes && (
+      {!error && notes?.length && (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-[10px]">
-          <NoteCard />
-          <NoteCard />
-          <NoteCard />
-          <NoteCard />
-          <NoteCard />
-          <NoteCard />
+          {notes.map((note, index) => (
+            <div key={index}>
+              <NoteCard note={note} />
+            </div>
+          ))}
         </div>
       )}
       {showNotePopup && <NoteCardPopup setShowStatus={setShowNotePopup} />}

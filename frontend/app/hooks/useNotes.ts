@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { getNotes, createNote, Note } from "../services/notesService";
-import { log } from "console";
 
 const useNotes = () => {
   const [notes, setNotes] = useState<Note[]>([]);

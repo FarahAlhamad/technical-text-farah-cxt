@@ -5,13 +5,13 @@ export interface Note {
 }
 
 export const getNotes = async (): Promise<Note[]> => {
-  const response = await fetch("/api/notes");
+  const response = await fetch("http://localhost:5000/api/notes");
   if (!response.ok) throw new Error("Failed to fetch notes");
   return await response.json();
 };
 
 export const createNote = async (note: Omit<Note, "id">): Promise<Note> => {
-  const response = await fetch("/api/notes", {
+  const response = await fetch("http://localhost:5000/api/notes", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
