@@ -4,6 +4,7 @@ import NoteCard from "./components/NoteCard";
 import useNotes from "./hooks/useNotes";
 import NoteCardPopup from "./components/NoteCardPopup";
 import Loading from "./components/Loading";
+import Button from "./components/Button";
 
 export default function Home() {
   const { notes, error, fetchNotes, addNote } = useNotes();
@@ -36,17 +37,12 @@ export default function Home() {
           A simple and efficient app to jot down your thoughts and ideas.
         </p>
       </header>
-      <button
-        className={`my-4 py-1 px-4 rounded-md text-white text-opacity-90 ${
-          isLoading
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-purple-500 hover:bg-purple-600"
-        }`}
+      <Button
+        label="Create Note"
         onClick={() => setShowNotePopup(true)}
         disabled={isLoading}
-      >
-        Create Note
-      </button>
+        variant="primary"
+      />
       {isLoading ? (
         <Loading />
       ) : (

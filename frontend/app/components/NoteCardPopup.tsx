@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Button from "./Button";
 
 type NoteCardPopupProps = {
   closePopup: () => void;
@@ -82,10 +83,20 @@ const NoteCardPopup = ({
             {validations.content && (
               <p className="text-red-500 text-sm">{validations.content}</p>
             )}
-            <button onClick={(e) => handleAddNote(e)}>
-              {isLoading ? "Creating" : "Create"}
-            </button>
-            <button onClick={() => closePopup()}>Close</button>
+            <div className="flex justify-end gap-3">
+              <Button
+                label="Create"
+                onClick={(e) => handleAddNote(e)}
+                disabled={isLoading}
+                variant="primary"
+              />
+              <Button
+                label="Close"
+                onClick={(e) => closePopup()}
+                disabled={isLoading}
+                variant="cancel"
+              />
+            </div>
           </form>
         </div>
       </div>
